@@ -1,0 +1,186 @@
+/* Minimalist Modern Design System - Refined & Lightweight */
+
+:root {
+  /* Unified Brand Colors - Deep Professional Blue */
+  --accent: #2563EB;
+  --accent-secondary: #3B82F6;
+  --accent-hover: #3B82F6;
+  --accent-active: #1D4ED8;
+  --signature-gradient: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  --sidebar-bg: #0F172A;
+
+  /* Element Plus Variable Overrides - 使用 !important 确保覆盖 */
+  --el-color-primary: #2563EB !important;
+  --el-color-primary-light-3: #60A5FA !important;
+  --el-color-primary-light-5: #93C5FD !important;
+  --el-color-primary-light-7: #BFDBFE !important;
+  --el-color-primary-light-8: #DBEAFE !important;
+  --el-color-primary-light-9: #EFF6FF !important;
+  --el-color-primary-dark-2: #1D4ED8 !important;
+  --el-border-radius-base: 12px;
+  --el-font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+
+  /* New Page Header */
+  --page-header-bg: #fff;
+  --page-header-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+/* Page Container Styles */
+.page-container {
+  background-color: transparent;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Card-like Sections */
+.content-card {
+  background: #fff;
+  border-radius: 24px;
+  border: 1px solid #F1F5F9;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  padding: 24px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 12px 20px -5px rgba(0,0,0,0.05);
+  }
+}
+
+/* Search Area Style */
+.search-area {
+  @extend .content-card;
+  padding: 20px 24px;
+  padding-bottom: 0;
+
+  :deep(.el-form-item) {
+    margin-bottom: 0;
+    margin-right: 16px;
+  }
+}
+
+/* Table Area Style */
+.table-area {
+  @extend .content-card;
+  flex: 1;
+}
+
+/* Toolbar Style */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1E293B;
+  }
+}
+
+/* Fix Encoding/Font Fallback */
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #FAFAFA;
+  color: #0F172A;
+}
+
+/* Typography */
+h1, h2, .font-display {
+  font-family: 'Calistoga', 'PingFang SC', serif;
+  letter-spacing: -0.01em;
+}
+
+.gradient-text {
+  background: var(--signature-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Refined Sidebar - Lightweight Style */
+.sidebar-refined {
+  :deep(.el-menu-item) {
+    height: 44px !important;
+    margin: 4px 12px !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: #94A3B8 !important;
+    border-left: 3px solid transparent;
+    padding-left: 16px !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #FFF !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+
+    &.is-active {
+      color: #FFF !important;
+      background: rgba(30, 64, 175, 0.12) !important;
+      border-left: 3px solid var(--accent);
+      font-weight: 500;
+    }
+  }
+}
+
+/* Refined Badge - Smaller & Professional */
+.modern-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(30, 64, 175, 0.2);
+  background: rgba(30, 64, 175, 0.04);
+
+  .dot {
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    &.pulse { animation: badge-pulse 2s infinite; }
+  }
+
+  span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+}
+
+/* Table - Increased Breathing Room */
+.el-table {
+  --el-table-header-bg-color: #FAFAFA;
+  --el-table-row-hover-bg-color: #F8FAFC;
+
+  th.el-table__cell {
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    color: #64748B !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 0 !important;
+  }
+
+  td.el-table__cell {
+    padding: 14px 0 !important;
+  }
+}
+
+@keyframes badge-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}

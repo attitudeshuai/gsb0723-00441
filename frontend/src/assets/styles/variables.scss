@@ -1,0 +1,141 @@
+// =====================================
+// 赵村中心小学管理系统 - 样式变量
+// =====================================
+
+// 主题色
+$primary-color: #0F172A;
+$primary-accent: #3B82F6;
+$success-color: #10B981;
+$warning-color: #F59E0B;
+$danger-color: #EF4444;
+$info-color: #64748B;
+
+// 文字颜色
+$text-primary: #1E293B;  // Slate 800
+$text-regular: #475569;  // Slate 600
+$text-secondary: #94A3B8; // Slate 400
+$text-placeholder: #CBD5E1; // Slate 300
+
+// 边框颜色
+$border-base: #E2E8F0;   // Slate 200
+$border-light: #F1F5F9;  // Slate 100
+$border-lighter: #F8FAFC; // Slate 50
+$border-extra-light: #F8FAFC;
+
+// 背景颜色
+$bg-base: #F8FAFC;       // Slate 50
+$bg-page: #F8FAFC;
+$bg-white: #FFFFFF;
+$bg-light: #F1F5F9;
+
+// 字体大小
+$font-size-extra-large: 20px;
+$font-size-large: 18px;
+$font-size-medium: 16px;
+$font-size-base: 14px;
+$font-size-small: 13px;
+$font-size-extra-small: 12px;
+
+// 间距
+$spacing-extra-small: 4px;
+$spacing-small: 8px;
+$spacing-base: 16px;     // Increased base spacing
+$spacing-medium: 20px;
+$spacing-large: 24px;
+$spacing-extra-large: 32px;
+
+// 圆角
+$border-radius-small: 4px;
+$border-radius-base: 8px;  // Increased radius
+$border-radius-medium: 12px;
+$border-radius-large: 16px;
+$border-radius-round: 24px;
+$border-radius-circle: 50%;
+
+// 阴影
+$box-shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+$box-shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+$box-shadow-dark: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+
+// 布局
+$header-height: 64px;
+$sidebar-width: 240px;
+$sidebar-collapsed-width: 100px;
+
+// 动画时长
+$transition-duration: 0.3s;
+$transition-duration-fast: 0.15s;
+
+// 渐变色 (Deprecated, prefer flat colors)
+$gradient-primary: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+$gradient-success: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+$gradient-warning: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+$gradient-info: linear-gradient(135deg, #64748B 0%, #94A3B8 100%);
+
+// z-index 层级
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// 响应式断点
+$breakpoint-xs: 480px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1600px;
+
+// Mixin: 响应式
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: $breakpoint-xs) { @content; }
+  } @else if $breakpoint == sm {
+    @media (max-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (max-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (max-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (max-width: $breakpoint-xl) { @content; }
+  }
+}
+
+// Mixin: 文字省略
+@mixin text-ellipsis($lines: 1) {
+  overflow: hidden;
+  @if $lines == 1 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+  }
+}
+
+// Mixin: Flex 居中
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Mixin: Flex 两端对齐
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Mixin: 清除浮动
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}

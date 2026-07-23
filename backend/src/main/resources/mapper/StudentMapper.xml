@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.school.mapper.StudentMapper">
+
+    <resultMap id="StudentVOResultMap" type="com.school.vo.StudentVO">
+        <id column="id" property="id"/>
+        <result column="student_no" property="studentNo"/>
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="birth_date" property="birthDate"/>
+        <result column="class_id" property="classId"/>
+        <result column="class_name" property="className"/>
+        <result column="parent_name" property="parentName"/>
+        <result column="parent_phone" property="parentPhone"/>
+        <result column="address" property="address"/>
+        <result column="status" property="status"/>
+        <result column="enroll_date" property="enrollDate"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectStudentPage" resultMap="StudentVOResultMap">
+        SELECT s.id, s.student_no, s.name, s.gender, s.birth_date, s.class_id,
+               c.class_name, s.parent_name, s.parent_phone, s.address,
+               s.status, s.enroll_date, s.create_time
+        FROM student s
+        LEFT JOIN class c ON s.class_id = c.id
+        WHERE s.deleted = 0
+        <if test="classId != null">
+            AND s.class_id = #{classId}
+        </if>
+        <if test="name != null and name != ''">
+            AND s.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="status != null">
+            AND s.status = #{status}
+        </if>
+        ORDER BY s.student_no
+    </select>
+
+</mapper>

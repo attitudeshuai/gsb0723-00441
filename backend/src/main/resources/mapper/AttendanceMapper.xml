@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.school.mapper.AttendanceMapper">
+
+    <resultMap id="AttendanceResultMap" type="com.school.entity.Attendance">
+        <id column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="attend_date" property="attendDate"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="student_name" property="studentName"/>
+        <result column="student_no" property="studentNo"/>
+        <result column="class_name" property="className"/>
+    </resultMap>
+
+    <select id="selectAttendanceList" resultMap="AttendanceResultMap">
+        SELECT a.id, a.student_id, a.attend_date, a.status, a.remark,
+               s.name as student_name, s.student_no, c.class_name
+        FROM attendance a
+        LEFT JOIN student s ON a.student_id = s.id
+        LEFT JOIN class c ON s.class_id = c.id
+        WHERE s.class_id = #{classId}
+        <if test="attendDate != null">
+            AND a.attend_date = #{attendDate}
+        </if>
+        ORDER BY s.student_no
+    </select>
+
+    <select id="selectAttendanceStats" resultType="java.util.Map">
+        SELECT s.id as studentId, s.name as studentName,
+               SUM(CASE WHEN a.status = 1 THEN 1 ELSE 0 END) as attendCount,
+               SUM(CASE WHEN a.status = 2 THEN 1 ELSE 0 END) as lateCount,
+               SUM(CASE WHEN a.status = 4 THEN 1 ELSE 0 END) as leaveCount,
+               SUM(CASE WHEN a.status = 5 THEN 1 ELSE 0 END) as absentCount,
+               COUNT(a.id) as totalDays
+        FROM student s
+        LEFT JOIN attendance a ON s.id = a.student_id
+            AND a.attend_date BETWEEN #{startDate} AND #{endDate}
+        WHERE s.deleted = 0
+        <if test="classId != null">
+            AND s.class_id = #{classId}
+        </if>
+        GROUP BY s.id, s.name
+        ORDER BY s.student_no
+    </select>
+
+    <select id="selectTodayAttendanceRate" resultType="java.util.Map">
+        SELECT
+            (SELECT COUNT(*) FROM student WHERE deleted = 0 AND status = 1) as totalStudents,
+            (SELECT COUNT(*) FROM attendance WHERE attend_date = #{date} AND status = 1) as attendCount
+    </select>
+
+    <select id="selectWeeklyAttendanceTrend" resultType="java.util.Map">
+        SELECT
+            a.attend_date as attendDate,
+            COUNT(CASE WHEN a.status = 1 THEN 1 END) as attendCount,
+            (SELECT COUNT(*) FROM student WHERE deleted = 0 AND status = 1) as totalStudents
+        FROM attendance a
+        WHERE a.attend_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY a.attend_date
+        ORDER BY a.attend_date
+    </select>
+
+</mapper>

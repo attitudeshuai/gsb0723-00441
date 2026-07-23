@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.school.mapper.ScoreMapper">
+
+    <resultMap id="ScoreResultMap" type="com.school.entity.Score">
+        <id column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="course_id" property="courseId"/>
+        <result column="exam_id" property="examId"/>
+        <result column="score" property="score"/>
+        <result column="student_name" property="studentName"/>
+        <result column="student_no" property="studentNo"/>
+        <result column="course_name" property="courseName"/>
+        <result column="exam_name" property="examName"/>
+    </resultMap>
+
+    <select id="selectScoreList" resultMap="ScoreResultMap">
+        SELECT sc.id, s.id as student_id, sc.course_id, sc.exam_id, sc.score,
+               s.name as student_name, s.student_no,
+               c.course_name, e.exam_name
+        FROM student s
+        LEFT JOIN score sc ON s.id = sc.student_id
+            AND (#{examId} IS NULL OR sc.exam_id = #{examId})
+            AND (#{courseId} IS NULL OR sc.course_id = #{courseId})
+            AND (sc.deleted = 0 OR sc.deleted IS NULL)
+        LEFT JOIN course c ON sc.course_id = c.id
+        LEFT JOIN exam e ON sc.exam_id = e.id
+        WHERE s.deleted = 0
+        <if test="classId != null">
+            AND s.class_id = #{classId}
+        </if>
+        <if test="examId != null">
+            AND sc.exam_id = #{examId}
+        </if>
+        ORDER BY s.student_no
+    </select>
+
+    <select id="selectScoreStats" resultType="java.util.Map">
+        SELECT
+            COUNT(DISTINCT sc.student_id) as studentCount,
+            AVG(sc.score) as avgScore,
+            MAX(sc.score) as maxScore,
+            MIN(sc.score) as minScore,
+            SUM(CASE WHEN sc.score >= 60 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as passRate,
+            SUM(CASE WHEN sc.score >= 90 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as excellentRate
+        FROM score sc
+        LEFT JOIN student s ON sc.student_id = s.id AND s.deleted = 0
+        WHERE sc.exam_id = #{examId}
+        AND sc.deleted = 0
+        <if test="classId != null">
+            AND s.class_id = #{classId}
+        </if>
+        <if test="courseId != null">
+            AND sc.course_id = #{courseId}
+        </if>
+    </select>
+
+    <select id="selectScoreTrend" resultType="java.util.Map">
+        SELECT e.exam_name as examName, sc.score, e.exam_date as examDate
+        FROM score sc
+        LEFT JOIN exam e ON sc.exam_id = e.id AND e.deleted = 0
+        WHERE sc.student_id = #{studentId}
+        AND sc.deleted = 0
+        <if test="courseId != null">
+            AND sc.course_id = #{courseId}
+        </if>
+        ORDER BY e.exam_date
+    </select>
+
+    <select id="selectScoreDistribution" resultType="java.util.Map">
+        SELECT
+            COALESCE(SUM(CASE WHEN sc.score >= 90 THEN 1 ELSE 0 END), 0) as excellent,
+            COALESCE(SUM(CASE WHEN sc.score >= 80 AND sc.score &lt; 90 THEN 1 ELSE 0 END), 0) as good,
+            COALESCE(SUM(CASE WHEN sc.score >= 70 AND sc.score &lt; 80 THEN 1 ELSE 0 END), 0) as medium,
+            COALESCE(SUM(CASE WHEN sc.score >= 60 AND sc.score &lt; 70 THEN 1 ELSE 0 END), 0) as pass,
+            COALESCE(SUM(CASE WHEN sc.score &lt; 60 THEN 1 ELSE 0 END), 0) as fail
+        FROM score sc
+        WHERE sc.deleted = 0
+        AND sc.exam_id = (SELECT id FROM exam WHERE deleted = 0 ORDER BY exam_date DESC LIMIT 1)
+    </select>
+
+</mapper>
