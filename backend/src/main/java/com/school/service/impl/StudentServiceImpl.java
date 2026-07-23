@@ -184,9 +184,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     private void setTextFields(StudentVO vo) {
         vo.setGenderText(vo.getGender() == 1 ? "男" : "女");
         switch (vo.getStatus()) {
-            case 1 -> vo.setStatusText("在读");
+            case 1 -> vo.setStatusText("毕业");
             case 2 -> vo.setStatusText("转出");
-            case 3 -> vo.setStatusText("毕业");
+            case 3 -> vo.setStatusText("在读");
         }
     }
 }
