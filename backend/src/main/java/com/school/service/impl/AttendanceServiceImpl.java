@@ -77,8 +77,8 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
             vo.setStudentCount(studentMapper.selectCount(null).intValue());
         }
 
-        // 计算天数
-        long days = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
+        // 计算天数（首尾均包含，闭区间）
+        long days = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate) + 1;
         vo.setTotalDays((int) days);
 
         // 获取统计数据
