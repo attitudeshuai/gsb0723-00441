@@ -158,9 +158,9 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
             if (score.getScore() == null) continue;
             int s = score.getScore().intValue();
             if (s >= 90) {
-                distribution.setGood(distribution.getGood() + 1);
-            } else if (s >= 80) {
                 distribution.setExcellent(distribution.getExcellent() + 1);
+            } else if (s >= 80) {
+                distribution.setGood(distribution.getGood() + 1);
             } else if (s >= 60) {
                 distribution.setPass(distribution.getPass() + 1);
             } else {

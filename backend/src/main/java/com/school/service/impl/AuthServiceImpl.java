@@ -75,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException(ResultCode.USER_NOT_FOUND);
         }
 
-        if (passwordUtil.matches(oldPassword, user.getPassword())) {
+        if (!passwordUtil.matches(oldPassword, user.getPassword())) {
             throw new BusinessException(ResultCode.PASSWORD_ERROR);
         }
 
